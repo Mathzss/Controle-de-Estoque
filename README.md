@@ -2,7 +2,7 @@ Aqui está uma versão resumida e estilizada para o seu GitHub:
 
 ---
 
-# 🚀 Bem-vindo ao seu projeto Lovable  
+# 🚀 Bem-vindo ao meu projeto Lovable  
 
 ## 🔗 Acesse seu projeto  
 [**Lovable Project**](https://lovable.dev/projects/255dee5d-6720-40d4-befb-20ae842bb9d5)  
