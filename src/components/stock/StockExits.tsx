@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileDown, Plus } from "lucide-react";
@@ -25,11 +24,10 @@ import {
 
 const StockExits = () => {
   const { toast } = useToast();
-  const [exits, addExit, products] = useStockStore((state) => [
-    state.exits,
-    state.addExit,
-    state.products,
-  ]);
+  const exits = useStockStore((state) => state.exits);
+  const addExit = useStockStore((state) => state.addExit);
+  const products = useStockStore((state) => state.products);
+  
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newExit, setNewExit] = useState({
     product: "",

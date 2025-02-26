@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileDown, Plus } from "lucide-react";
@@ -18,10 +17,8 @@ import { Label } from "@/components/ui/label";
 
 const StockEntries = () => {
   const { toast } = useToast();
-  const [entries, addEntry] = useStockStore((state) => [
-    state.entries,
-    state.addEntry,
-  ]);
+  const entries = useStockStore((state) => state.entries);
+  const addEntry = useStockStore((state) => state.addEntry);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newEntry, setNewEntry] = useState({
     product: "",
