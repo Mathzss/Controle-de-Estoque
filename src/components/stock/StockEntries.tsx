@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileDown, Plus } from "lucide-react";
@@ -24,6 +25,8 @@ const StockEntries = () => {
     product: "",
     quantity: "",
     supplier: "",
+    batch: "",
+    expirationDate: "",
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -31,7 +34,7 @@ const StockEntries = () => {
     if (!newEntry.product || !newEntry.quantity || !newEntry.supplier) {
       toast({
         title: "Erro",
-        description: "Por favor, preencha todos os campos",
+        description: "Por favor, preencha todos os campos obrigatórios",
         variant: "destructive",
       });
       return;
@@ -43,7 +46,13 @@ const StockEntries = () => {
       date: new Date().toISOString().split('T')[0],
     });
 
-    setNewEntry({ product: "", quantity: "", supplier: "" });
+    setNewEntry({ 
+      product: "", 
+      quantity: "", 
+      supplier: "",
+      batch: "",
+      expirationDate: "",
+    });
     setIsDialogOpen(false);
     
     toast({
@@ -82,7 +91,7 @@ const StockEntries = () => {
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="product">Produto</Label>
+                  <Label htmlFor="product">Produto *</Label>
                   <Input
                     id="product"
                     placeholder="Nome do produto"
@@ -93,7 +102,7 @@ const StockEntries = () => {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="quantity">Quantidade</Label>
+                  <Label htmlFor="quantity">Quantidade *</Label>
                   <Input
                     id="quantity"
                     type="number"
@@ -106,13 +115,35 @@ const StockEntries = () => {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="supplier">Fornecedor</Label>
+                  <Label htmlFor="supplier">Fornecedor *</Label>
                   <Input
                     id="supplier"
                     placeholder="Nome do fornecedor"
                     value={newEntry.supplier}
                     onChange={(e) =>
                       setNewEntry({ ...newEntry, supplier: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="batch">Lote</Label>
+                  <Input
+                    id="batch"
+                    placeholder="Número do lote"
+                    value={newEntry.batch}
+                    onChange={(e) =>
+                      setNewEntry({ ...newEntry, batch: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="expirationDate">Data de Validade</Label>
+                  <Input
+                    id="expirationDate"
+                    type="date"
+                    value={newEntry.expirationDate}
+                    onChange={(e) =>
+                      setNewEntry({ ...newEntry, expirationDate: e.target.value })
                     }
                   />
                 </div>
@@ -137,6 +168,8 @@ const StockEntries = () => {
               <TableHead>Quantidade</TableHead>
               <TableHead>Data</TableHead>
               <TableHead>Fornecedor</TableHead>
+              <TableHead>Lote</TableHead>
+              <TableHead>Validade</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -146,6 +179,8 @@ const StockEntries = () => {
                 <TableCell>{entry.quantity}</TableCell>
                 <TableCell>{entry.date}</TableCell>
                 <TableCell>{entry.supplier}</TableCell>
+                <TableCell>{entry.batch || '-'}</TableCell>
+                <TableCell>{entry.expirationDate || '-'}</TableCell>
               </TableRow>
             ))}
           </TableBody>

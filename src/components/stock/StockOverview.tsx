@@ -36,21 +36,27 @@ const StockOverview = () => {
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>Código</TableHead>
               <TableHead>Nome do Produto</TableHead>
               <TableHead>Quantidade em Estoque</TableHead>
               <TableHead>Estoque Mínimo</TableHead>
               <TableHead>Categoria</TableHead>
+              <TableHead>Lote</TableHead>
+              <TableHead>Validade</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {products.map((product) => (
               <TableRow key={product.id} className="hover-scale">
+                <TableCell>{product.code}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell className={product.quantity <= product.minStock ? "text-destructive" : ""}>
                   {product.quantity}
                 </TableCell>
                 <TableCell>{product.minStock}</TableCell>
                 <TableCell>{product.category}</TableCell>
+                <TableCell>{product.batch || '-'}</TableCell>
+                <TableCell>{product.expirationDate || '-'}</TableCell>
               </TableRow>
             ))}
           </TableBody>

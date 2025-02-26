@@ -4,9 +4,12 @@ import { create } from 'zustand';
 export interface Product {
   id: number;
   name: string;
+  code: string;
   quantity: number;
   minStock: number;
   category: string;
+  batch?: string;
+  expirationDate?: string;
 }
 
 export interface StockEntry {
@@ -15,6 +18,8 @@ export interface StockEntry {
   quantity: number;
   date: string;
   supplier: string;
+  batch?: string;
+  expirationDate?: string;
 }
 
 export interface StockExit {
@@ -37,9 +42,16 @@ interface StockState {
 
 export const useStockStore = create<StockState>((set) => ({
   products: [
-    { id: 1, name: "Produto 1", quantity: 50, minStock: 10, category: "Categoria A" },
-    { id: 2, name: "Produto 2", quantity: 30, minStock: 15, category: "Categoria B" },
-    { id: 3, name: "Produto 3", quantity: 75, minStock: 20, category: "Categoria A" },
+    { 
+      id: 1, 
+      name: "Produto 1", 
+      code: "P001",
+      quantity: 50, 
+      minStock: 10, 
+      category: "Categoria A",
+      batch: "LOT001",
+      expirationDate: "2024-12-31"
+    },
   ],
   entries: [],
   exits: [],
@@ -52,14 +64,43 @@ export const useStockStore = create<StockState>((set) => ({
   addEntry: (entry) =>
     set((state) => {
       const newEntry = { ...entry, id: state.entries.length + 1 };
-      return {
-        entries: [newEntry, ...state.entries],
-        products: state.products.map((product) =>
-          product.name === entry.product
-            ? { ...product, quantity: product.quantity + entry.quantity }
-            : product
-        ),
-      };
+      
+      // Verifica se o produto já existe
+      const existingProduct = state.products.find(p => p.name === entry.product);
+      
+      if (existingProduct) {
+        // Atualiza o produto existente
+        return {
+          entries: [newEntry, ...state.entries],
+          products: state.products.map((product) =>
+            product.name === entry.product
+              ? { 
+                  ...product, 
+                  quantity: product.quantity + entry.quantity,
+                  batch: entry.batch || product.batch,
+                  expirationDate: entry.expirationDate || product.expirationDate
+                }
+              : product
+          ),
+        };
+      } else {
+        // Cria um novo produto
+        const newProduct = {
+          id: state.products.length + 1,
+          name: entry.product,
+          code: `P${String(state.products.length + 1).padStart(3, '0')}`,
+          quantity: entry.quantity,
+          minStock: 10,
+          category: "Sem Categoria",
+          batch: entry.batch,
+          expirationDate: entry.expirationDate
+        };
+        
+        return {
+          entries: [newEntry, ...state.entries],
+          products: [...state.products, newProduct],
+        };
+      }
     }),
     
   addExit: (exit) =>
